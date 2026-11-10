@@ -4,7 +4,7 @@
 
 ## Skills
 
-- [`scrapfly-agent-rules`](skills/scrapfly-agent-rules/SKILL.md): Cross-tool golden rules for an autonomous Scrapfly web agent connected to the Scrapfly MCP server (web_scrape, screenshot, check_if_blocked, the Cloud Browser lifecycle, snapshot/click/fill/type/press/scroll/select/drag, and WebMCP).
+- [`scrapfly-agent-rules`](skills/scrapfly-agent-rules/SKILL.md): Cross-tool golden rules for an autonomous Scrapfly web agent connected to the Scrapfly MCP server (web_scrape, screenshot, the Cloud Browser lifecycle, snapshot/click/fill/type/press/scroll/select/drag, and WebMCP).
 - [`scrapfly-alerting`](skills/scrapfly-alerting/SKILL.md): Threshold-based alerting on Scrapfly account metrics.
 - [`scrapfly-browser`](skills/scrapfly-browser/SKILL.md): Automate cloud browsers using the Scrapfly Cloud Browser API with Python Playwright.
 - [`scrapfly-cli`](skills/scrapfly-cli/SKILL.md): Use the Scrapfly CLI (`scrapfly`) to scrape web pages, capture screenshots, extract structured data with AI, crawl entire sites, and drive a cloud browser over CDP from a shell.

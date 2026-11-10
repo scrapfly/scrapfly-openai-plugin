@@ -56,20 +56,20 @@ every `ScrapeConfig` field from the SDK:
 - Pipe-friendly: `--proxified` streams the raw upstream body with no JSON
   envelope
 
-When a site blocks, `--unblocker-ultra` is the flag to use
-(`proxy_pool=unblocker_ultra`): it is never refused, and costs the same as
-`--unblocker` except on a target with a price of its
-own, which it adds. `--unblocker` (`proxy_pool=unblocker`, residential proxies
-and the Unblocker) is refused there with `ERR::PROXY::UNBLOCKER_ULTRA_REQUIRED`
-(HTTP 422, not billed), and the error envelope then carries the hint
-`retry with --unblocker-ultra`. `--proxy-pool basic` (datacenter proxies,
-Unblocker off) suits a site datacenter proxies get through. `--proxy-pool auto`
+The proxy pool is an option of each request. `--proxy-pool basic` (datacenter
+proxies, Unblocker off) suits pages that load on a plain request.
+`--unblocker` (`proxy_pool=unblocker`, residential proxies and the Unblocker)
+suits pages that need residential proxies and a real browser.
+`--unblocker-ultra` (`proxy_pool=unblocker_ultra`) is the same pool, accepted
+on every target: it costs the same as `--unblocker` except on a target with a
+price of its own, which it adds, and which answers `--unblocker` with
+`ERR::PROXY::UNBLOCKER_ULTRA_REQUIRED` (HTTP 422, not billed). `--proxy-pool auto`
 lets the API pick the pool before the request, from the target's profile: the
 Unblocker on datacenter proxies, or the pool the target needs. It is accepted
 on every target, the ones that require `unblocker_ultra` included, where their
 price is added, and is priced as the pool it runs on. A `--proxy-pool` word
 wins over the flags, `--unblocker-ultra` over `--unblocker`, and `--asp` is an
-alias of `--unblocker-ultra`; any other `--proxy-pool` value, such as `tor`, is
+alias of `--unblocker-ultra`; any other `--proxy-pool` value is
 sent as given, with `asp=true` when one of the flags is beside it.
 `scrape batch`, `crawl start` and `crawl run` take the same flags.
 
@@ -115,7 +115,7 @@ scrapfly browser https://target.example.com --unblock --country us --pretty
 confusingly similar names: `--unblock` opens a Cloud Browser session through
 `POST /unblock`, while `--unblocker-ultra` or `--unblocker` picks an
 Unblocker pool of a stateless `scrape` or `crawl`. Cloud
-Browser sessions keep their own pools, `datacenter`, `residential`, `tor` and
+Browser sessions keep their own pools, among them `datacenter`, `residential` and
 `byop` (`browser --proxy-pool`), and refuse `basic`, `unblocker`,
 `unblocker_ultra` and `auto` with `ERR::BROWSER::CONFIG_ERROR`.
 
@@ -255,7 +255,7 @@ All commands emit a stable JSON envelope on stdout:
 ```
 
 Exit code is `0` on success, `1` on any error. An error's `hint`, when
-present, is the next step to take, such as `retry with --unblocker-ultra`.
+present, is the next step to take.
 `--pretty` swaps JSON for a one-line human summary. Binary products
 (screenshots, crawl artifacts, session recordings) require `-o <file>` or
 `-O <dir>` for the path; without either, JSON mode returns base64.
@@ -416,7 +416,7 @@ scrapfly crawl parse har-get crawl.har https://example.com/api \
 ## Quick examples
 
 ```bash
-# A site that blocks: the Unblocker Ultra pool, never refused (CLI release after 0.4.1)
+# The Unblocker Ultra pool, accepted on every target (CLI release after 0.4.1)
 scrapfly scrape https://web-scraping.dev/products --render-js --unblocker-ultra --format markdown
 
 # Scrape a JS-heavy page through the Unblocker pool with markdown output
@@ -532,8 +532,7 @@ client (Claude Desktop, Cursor, Claude Code):
 ```
 
 Tool inputs follow the API, not the CLI flags: `proxy_pool` takes `basic`,
-`unblocker`, `unblocker_ultra`, `auto`, `tor` or `public_tor_pool` (the Tor
-pool's name in results). The `unblocker` and `asp`
+`unblocker`, `unblocker_ultra` and `auto`, among others. The `unblocker` and `asp`
 inputs are not the CLI's `--unblocker` and `--asp` flags: they are deprecated,
 use `proxy_pool` (`unblocker_ultra` for the Unblocker). The
 [migration guide](https://scrapfly.io/new-pricing#legacy-spellings) covers
