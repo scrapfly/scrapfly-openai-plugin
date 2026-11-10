@@ -1,0 +1,40 @@
+{
+  "name": "scrapfly",
+  "version": "1.0.0",
+  "description": "Scrapfly web data skills for Codex: scraping, screenshots, AI data extraction, crawling, Cloud Browser automation and alerting, through the Scrapfly CLI, SDKs and API.",
+  "author": {
+    "name": "Scrapfly",
+    "url": "https://scrapfly.io"
+  },
+  "homepage": "https://scrapfly.io/docs",
+  "repository": "https://github.com/scrapfly/scrapfly-openai-plugin",
+  "license": "MIT",
+  "keywords": [
+    "scrapfly",
+    "web-scraping",
+    "screenshot",
+    "extraction",
+    "crawler",
+    "browser-automation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Scrapfly",
+    "shortDescription": "Scrape, screenshot, extract and crawl the web with Scrapfly",
+    "longDescription": "Skills for the Scrapfly web data APIs: scrape pages with JavaScript rendering and proxy pools, capture screenshots, extract structured data with AI, crawl sites, automate Cloud Browser sessions with Playwright, and set alerts on account metrics. Covers the scrapfly CLI and the Python, TypeScript, Go and Rust SDKs. Requires a Scrapfly API key from scrapfly.io.",
+    "developerName": "Scrapfly",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://scrapfly.io",
+    "privacyPolicyURL": "https://scrapfly.io/privacy-policy",
+    "termsOfServiceURL": "https://scrapfly.io/terms-of-service",
+    "defaultPrompt": [
+      "Use Scrapfly to scrape https://web-scraping.dev/products and list each product's name and price.",
+      "Use Scrapfly to take a full-page screenshot of https://web-scraping.dev."
+    ],
+    "brandColor": "#4ea8f1"
+  }
+}

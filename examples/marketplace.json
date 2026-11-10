@@ -1,0 +1,20 @@
+{
+  "name": "scrapfly-local",
+  "interface": {
+    "displayName": "Scrapfly (local)"
+  },
+  "plugins": [
+    {
+      "name": "scrapfly",
+      "source": {
+        "source": "local",
+        "path": "./plugins/scrapfly-openai-plugin"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
