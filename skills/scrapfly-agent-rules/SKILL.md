@@ -6,7 +6,7 @@ description: >-
   Cloud Browser lifecycle, snapshot/click/fill/type/press/scroll/select/drag,
   and WebMCP). Use when an LLM agent has access to the Scrapfly MCP toolset
   and needs to choose between stateless scraping and a stateful Cloud Browser
-  session, pick a proxy pool, or coordinate multi-tool flows.
+  session, decide when a page needs the Unblocker, or coordinate multi-tool flows.
 ---
 
 # Scrapfly Agent — Golden Rules
@@ -22,7 +22,7 @@ decisions that span several tools.
 ## When to use
 
 Activate when the agent is connected to a Scrapfly MCP server and needs
-guidance that spans multiple tools (scrape vs. browser, which proxy pool, when WebMCP is available).
+guidance that spans multiple tools (scrape vs. browser, when a page needs the Unblocker, when WebMCP is available).
 
 These rules are *cross-tool*. Each individual tool's `description` field
 returned by `tools/list` remains the authoritative reference for that tool's
@@ -44,28 +44,17 @@ and *in what order*, not how to call any single tool.
    task requires interaction: clicking, form filling, multi-step navigation,
    login. Close the session when the user says you're done, not before.
 
-4. **`cloud_browser_open` runs on the Cloud Browser's own pools.** Its
-   `proxy_pool` is the Cloud Browser's datacenter or residential pool, never
-   `basic`, `unblocker`, `unblocker_ultra` or `auto`. For a page that needs
+4. **`cloud_browser_open` does not use the Unblocker.** For a page that needs
    the Unblocker in a browser session, open the session with
    `browser_unblock` instead.
 
-5. **Pick the proxy pool of `web_scrape` for the page.** `proxy_pool=basic`
-   (datacenter proxies, Unblocker off) for pages that load on a plain request,
-   `proxy_pool=unblocker` for pages that need residential proxies and a real
-   browser, `proxy_pool=unblocker_ultra` for a target with a price of its own
-   (`basic` and `unblocker` get `ERR::PROXY::UNBLOCKER_ULTRA_REQUIRED` there,
-   HTTP 422, not billed), or `proxy_pool=auto` to let the API pick the pool
-   from the target's profile. For interactive work on such a page,
-   `browser_unblock` opens a Cloud Browser session through `POST /unblock`:
-   despite the similar names, the Unblocker pools are `proxy_pool` values of
-   the stateless scrape, a different product. (`basic`, `unblocker`, `unblocker_ultra` and
-   `auto` need the MCP server release after 1.4.0; the tool's `proxy_pool`
-   schema lists what the connected server takes. The `unblocker` toggle and
-   its alias `asp`, still declared on the tool schema, are deprecated: use
-   `proxy_pool` (`unblocker_ultra` for the Unblocker). The
-   [migration guide](https://scrapfly.io/new-pricing#legacy-spellings) covers
-   requests written before the proxy pools.)
+5. **Turn on the Unblocker of `web_scrape` for the pages that need it.**
+   `unblocker=true` is for pages that need residential proxies and a real
+   browser. For interactive work on such a page, `browser_unblock` opens a
+   Cloud Browser session through `POST /unblock`: despite the similar names,
+   `unblocker` is a parameter of the stateless scrape, a different product. (`asp` is the permanently
+   supported deprecated alias of `unblocker`; both are declared on the tool
+   schema, so pass `unblocker` and never both.)
 
 6. **WebMCP tools beat raw DOM.** When the page exposes WebMCP tools
    (visible in `cloud_browser_open` / `cloud_browser_navigate` output, or via
