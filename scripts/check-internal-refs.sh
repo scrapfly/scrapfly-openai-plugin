@@ -33,6 +33,7 @@ patterns=(
   '\.claude/projects/'                    # agent session and memory paths
   '[a-z0-9-]+\.home\b'                    # development hostnames
   'scp-(live|test)-[0-9a-f]{32}'          # a real api key, not a placeholder
+  'https?://[^[:space:]"'\''<)]*example\.com'
 )
 labels=("${patterns[@]}")
 
